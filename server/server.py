@@ -54,23 +54,32 @@ class CalibratingMobile(base):
     loc_id = Column(Integer, ForeignKey("location.id"))
     location = relationship("Location", backref="calibrating_mobile")
 
+# @app.route('/')
+# def hello_world():
+#     return 'Hello, World!'
+
 @app.route("/rssi", methods=['GET', 'POST'])
 def rssi():
-	"""
-		TODO: Implement this function
-		It receives data from the access points on the path /rssi
-		with a parameter ap whose value is the sending AP MAC address
-		and a series of pairs XX:XX:XX:XX:XX:XX=-YY.YYYY
-		where the X's are the measured devices MAC addresses
-			  and the Y's are the avg RSSI values for the corresponding
-			  MAC address over the last second
-		You have to put these information in the sqlite3 database
-		named rssi.db whose schema can be displayed from the sqlite3
-		prompt through the command .schema
-		SQL Alchemy ORM classes and initialization are available above
-	"""
-	# Your code here
-    return "ok"
+    if(request.method == 'POST'):
+        return 'POST\n'
+    else:
+        return 'GET\n'
+    """
+        TODO: Implement this function
+        It receives data from the access points on the path /rssi
+        with a parameter ap whose value is the sending AP MAC address
+        and a series of pairs XX:XX:XX:XX:XX:XX=-YY.YYYY
+        where the X's are the measured devices MAC addresses
+        and the Y's are the avg RSSI values for the corresponding
+        MAC address over the last second
+        You have to put these information in the sqlite3 database
+        named rssi.db whose schema can be displayed from the sqlite3
+        prompt through the command .schema
+        SQL Alchemy ORM classes and initialization are available above
+    """
+    # return "ok"
+    # Your code here
+    # return "ok"
 
 
 @app.route("/start_calibration", methods=['GET', 'POST'])
