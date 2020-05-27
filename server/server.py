@@ -60,10 +60,6 @@ class CalibratingMobile(base):
 
 @app.route("/rssi", methods=['GET', 'POST'])
 def rssi():
-    if(request.method == 'POST'):
-        return 'POST\n'
-    else:
-        return 'GET\n'
     """
         TODO: Implement this function
         It receives data from the access points on the path /rssi
@@ -77,6 +73,32 @@ def rssi():
         prompt through the command .schema
         SQL Alchemy ORM classes and initialization are available above
     """
+
+    raw_data = request.args
+    print(raw_data)
+
+    ap_addr = raw_data['ap']
+
+    session = Session()
+    ap = AccessPoint(mac_address)
+    
+    session.add(ap)
+
+
+    for d in raw_data:
+        while(d != 'ap'):
+            sample = Sample.values(d, time.time(), raw_data[d], ap)
+            session.add(sample)
+        # print('key is {} and value is {}'.format(d, raw_data[d]))
+    
+    
+    # data = request.args.to_dict(flat=False)
+
+    # print(data)
+    # ap = request.args['ap']
+    # for agg in age:
+    # print('ap is {}'.format(age))
+    return 'GET \n'
     # return "ok"
     # Your code here
     # return "ok"
@@ -98,7 +120,31 @@ def start_calibration():
             step (2) when received.
     """
     # Your code here
-    return "ok"
+    session = Session()
+
+    print(request.args)
+    raw_data = request.args
+    
+    mac_addr = raw_data['mac_addr']
+    x = raw_data['x']
+    y = raw_data['y']
+    z = raw_data['z']
+
+    location = Location(x=x, y=y, z=z)
+
+    # add the location coordinates to the location table
+    session.add(location)
+
+    loc_id = session.query(Location).first().id
+    print('location is {}'.format(loc_id))
+
+    calibrating_mobile = CalibratingMobile(mac_address=mac_addr, loc_id=loc_id, location=location)
+    # add the calibrating data to the table
+    session.add(calibrating_mobile)
+
+
+
+    return "Calibration started."
 
 
 @app.route("/stop_calibration", methods=['GET', 'POST'])
@@ -123,4 +169,3 @@ def locate():
     """
     # Your code here
     return None
-
