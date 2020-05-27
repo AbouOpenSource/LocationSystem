@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import request
 
-from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, delete
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
@@ -155,7 +155,10 @@ def stop_calibration():
         It must delete any calibrating_mobile entry whose mac_address equal parameter mac_addr
     """
     # Your code here
-    return "ok"
+    mac_addr = request.args['mac_addr']
+    delete(CalibratingMobile).where(mac_address=mac_addr)
+
+    return "Calibration Stopped"
 
 
 @app.route("/locate", methods=['GET', 'POST'])
