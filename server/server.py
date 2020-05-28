@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import request
 
-from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, delete
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
@@ -54,24 +54,52 @@ class CalibratingMobile(base):
     loc_id = Column(Integer, ForeignKey("location.id"))
     location = relationship("Location", backref="calibrating_mobile")
 
+# @app.route('/')
+# def hello_world():
+#     return 'Hello, World!'
+
 @app.route("/rssi", methods=['GET', 'POST'])
 def rssi():
-	"""
-		TODO: Implement this function
-		It receives data from the access points on the path /rssi
-		with a parameter ap whose value is the sending AP MAC address
-		and a series of pairs XX:XX:XX:XX:XX:XX=-YY.YYYY
-		where the X's are the measured devices MAC addresses
-			  and the Y's are the avg RSSI values for the corresponding
-			  MAC address over the last second
-		You have to put these information in the sqlite3 database
-		named rssi.db whose schema can be displayed from the sqlite3
-		prompt through the command .schema
-		SQL Alchemy ORM classes and initialization are available above
-	"""
-	# Your code here
-    return "ok"
+    """
+        TODO: Implement this function
+        It receives data from the access points on the path /rssi
+        with a parameter ap whose value is the sending AP MAC address
+        and a series of pairs XX:XX:XX:XX:XX:XX=-YY.YYYY
+        where the X's are the measured devices MAC addresses
+        and the Y's are the avg RSSI values for the corresponding
+        MAC address over the last second
+        You have to put these information in the sqlite3 database
+        named rssi.db whose schema can be displayed from the sqlite3
+        prompt through the command .schema
+        SQL Alchemy ORM classes and initialization are available above
+    """
 
+    raw_data = request.args
+    print(raw_data)
+
+    ap_addr = raw_data['ap']
+
+    session = Session()
+    ap = AccessPoint(mac_address=ap_addr)
+    
+    session.add(ap)
+
+    ap2 = session.query(AccessPoint).first()
+
+
+    for d in raw_data:
+        if(d != 'ap'):
+            sample = Sample(ap_id=ap.id, source_address=d, timestamp=time.time(), rssi=raw_data[d],ap=ap)
+            session.add(sample)
+        # print('key is {} and value is {}'.format(d, raw_data[d]))
+    
+
+
+    # confirm the transactions
+    # session.commit() 
+
+    # data = request.args.to_dict(flat=False)
+    return 'GET \n'
 
 @app.route("/start_calibration", methods=['GET', 'POST'])
 def start_calibration():
@@ -89,7 +117,40 @@ def start_calibration():
             step (2) when received.
     """
     # Your code here
-    return "ok"
+    session = Session()
+
+    print(request.args)
+    raw_data = request.args
+    
+    mac_addr = raw_data['mac_addr']
+    x = raw_data['x']
+    y = raw_data['y']
+    z = raw_data['z']
+
+    location = Location(x=x, y=y, z=z)
+
+    # add the location coordinates to the location table
+    session.add(location)
+
+    loc = session.query(Location).first()
+    print('location is {}'.format(loc_id))
+
+    calibrating_mobile = CalibratingMobile(mac_address=mac_addr, loc_id=loc_id, location=location)
+    # add the calibrating data to the table
+    session.add(calibrating_mobile)
+    
+    all_samples = session.query(Sample).filter(Sample.source_address==mac_addr, Sample.timestamp>=(time.time()-1))
+    
+    if(all_samples != None):
+        for sample in all_samples:
+            fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc, ap=sample.ap)
+            session.add(fingerprint_value)
+    
+    # session.commit() # confirm the sql transaction
+
+
+
+    return "Calibration started."
 
 
 @app.route("/stop_calibration", methods=['GET', 'POST'])
@@ -100,7 +161,10 @@ def stop_calibration():
         It must delete any calibrating_mobile entry whose mac_address equal parameter mac_addr
     """
     # Your code here
-    return "ok"
+    mac_addr = request.args['mac_addr']
+    delete(CalibratingMobile).where(mac_address=mac_addr)
+
+    return "Calibration Stopped"
 
 
 @app.route("/locate", methods=['GET', 'POST'])
@@ -113,5 +177,6 @@ def locate():
         Use the closest in RSSI algorithm to find a fingerprint sample matching current sample and return its location
     """
     # Your code here
+    mac_addr = request.args['mac_addr']
+    samples = session.query(Sample).filter(Sample.source_address==mac_addr, Sample.timestamp>=(time.time()-1))
     return None
-
