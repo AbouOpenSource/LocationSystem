@@ -80,29 +80,26 @@ def rssi():
     ap_addr = raw_data['ap']
 
     session = Session()
-    ap = AccessPoint(mac_address)
+    ap = AccessPoint(mac_address=ap_addr)
     
     session.add(ap)
 
+    ap2 = session.query(AccessPoint).first()
+
 
     for d in raw_data:
-        while(d != 'ap'):
-            sample = Sample.values(d, time.time(), raw_data[d], ap)
+        if(d != 'ap'):
+            sample = Sample(ap_id=ap.id, source_address=d, timestamp=time.time(), rssi=raw_data[d],ap=ap)
             session.add(sample)
         # print('key is {} and value is {}'.format(d, raw_data[d]))
     
-    
+
+
+    # confirm the transactions
+    # session.commit() 
+
     # data = request.args.to_dict(flat=False)
-
-    # print(data)
-    # ap = request.args['ap']
-    # for agg in age:
-    # print('ap is {}'.format(age))
     return 'GET \n'
-    # return "ok"
-    # Your code here
-    # return "ok"
-
 
 @app.route("/start_calibration", methods=['GET', 'POST'])
 def start_calibration():
@@ -135,12 +132,21 @@ def start_calibration():
     # add the location coordinates to the location table
     session.add(location)
 
-    loc_id = session.query(Location).first().id
+    loc = session.query(Location).first()
     print('location is {}'.format(loc_id))
 
     calibrating_mobile = CalibratingMobile(mac_address=mac_addr, loc_id=loc_id, location=location)
     # add the calibrating data to the table
     session.add(calibrating_mobile)
+    
+    all_samples = session.query(Sample).filter(Sample.source_address==mac_addr, Sample.timestamp>=(time.time()-1))
+    
+    if(all_samples != None):
+        for sample in all_samples:
+            fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc, ap=sample.ap)
+            session.add(fingerprint_value)
+    
+    # session.commit() # confirm the sql transaction
 
 
 
