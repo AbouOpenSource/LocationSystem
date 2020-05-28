@@ -177,4 +177,6 @@ def locate():
         Use the closest in RSSI algorithm to find a fingerprint sample matching current sample and return its location
     """
     # Your code here
+    mac_addr = request.args['mac_addr']
+    samples = session.query(Sample).filter(Sample.source_address==mac_addr, Sample.timestamp>=(time.time()-1))
     return None
