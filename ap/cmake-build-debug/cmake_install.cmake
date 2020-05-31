@@ -1,4 +1,4 @@
-# Install script for directory: /home/abou/CLionProjects/apNew
+# Install script for directory: /home/abou/PycharmProjects/lab.git/ap
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/abou/CLionProjects/apNew/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

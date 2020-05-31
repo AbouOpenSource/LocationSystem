@@ -2,7 +2,7 @@
 #include "http.h"
 #include "pcap_handler.h"
 #include <iostream>
-#include <pcap.h>
+//#include <pcap.h>
 #include <getopt.h>
 #include <arpa/inet.h>
 #include <csignal>
@@ -11,10 +11,11 @@
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <linux/if.h>
-#include <netdb.h>
+//#include <netdb.h>
 #include <cstring>
 #include "config/config.h"
 #include <pcap/pcap.h>
+#include "utils/Util.h"
 using namespace std;
 
 /*
@@ -61,21 +62,23 @@ void sigint_handler(int sig) {
  * \TODO: implement new options and use config singleton to store cfg values.
  * */
 int main(int argc, char *argv[]) {
-  string iface_name{""};
+  string iface_name{"wlp2s0"};
   int opt;
   opt = getopt(argc, argv, "i:");
   if (opt == 'i') {
     iface_name = optarg;
+    std::cout << iface_name << std::endl;
   }
 
   signal(SIGINT, sigint_handler);
 
   char errbuf[PCAP_ERRBUF_SIZE];
-
+  Util::displayListInterface();
   pcap_hdl = pcap_open_live(iface_name.c_str(), BUFSIZ, 1, 100, errbuf);
   if (pcap_hdl == nullptr) {
     std::cout << "Could not open PCAP on interface" << iface_name << endl;
-      return -1;
+    printf(errbuf);
+    return -1;
   }
 
   pcap_handler_user_data pcap_user_data;

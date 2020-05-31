@@ -44,10 +44,10 @@ RM = /opt/soft/clion-2020.1.1/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/abou/CLionProjects/apNew
+CMAKE_SOURCE_DIR = /home/abou/PycharmProjects/lab.git/ap
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/abou/CLionProjects/apNew/cmake-build-debug
+CMAKE_BINARY_DIR = /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -74,14 +74,14 @@ clean: CMakeFiles/apNew.dir/clean
 CMakeFiles/apNew.dir/all:
 	$(MAKE) -f CMakeFiles/apNew.dir/build.make CMakeFiles/apNew.dir/depend
 	$(MAKE) -f CMakeFiles/apNew.dir/build.make CMakeFiles/apNew.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/abou/CLionProjects/apNew/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5 "Built target apNew"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target apNew"
 .PHONY : CMakeFiles/apNew.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/apNew.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/abou/CLionProjects/apNew/cmake-build-debug/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/apNew.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/abou/CLionProjects/apNew/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/apNew.dir/rule
 
 # Convenience name for target.

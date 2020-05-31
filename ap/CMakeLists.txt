@@ -3,7 +3,7 @@ project(apNew)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES pcap.cpp config/config.cpp config/config.h defines.h http.cpp http.h pcap_handler.cpp pcap_handler.h)
+set(SOURCE_FILES pcap.cpp config/config.cpp config/config.h defines.h http.cpp http.h pcap_handler.cpp pcap_handler.h utils/Util.cpp utils/Util.h)
 set(POCO_LIBRARY_STATIC -lPocoFoundation -lPocoNet)
 set(RADIOTAP_LIBRARY_STATIC -lradiotap)
 set(PCAP_LIBRARY_STATIC -lpcap)

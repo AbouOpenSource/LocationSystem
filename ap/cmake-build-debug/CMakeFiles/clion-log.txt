@@ -1,5 +1,5 @@
-/opt/soft/clion-2020.1.1/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/abou/CLionProjects/apNew
+/opt/soft/clion-2020.1.1/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/abou/PycharmProjects/lab.git/ap
 LINUX
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/abou/CLionProjects/apNew/cmake-build-debug
+-- Build files have been written to: /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug
