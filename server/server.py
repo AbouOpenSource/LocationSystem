@@ -89,12 +89,23 @@ def rssi():
 
     for d in raw_data:
         if(d != 'ap'):
-            sample = Sample(ap_id=ap.id, source_address=d, timestamp=time.time(), rssi=raw_data[d],ap=ap)
+            sample = Sample(ap_id=ap2.id, source_address=d, timestamp=time.time(), rssi=raw_data[d],ap=ap2)
             session.add(sample)
         # print('key is {} and value is {}'.format(d, raw_data[d]))
     
 
+    calibrating_data = session.query(CalibratingMobile).filter(CalibratingMobile.mac_address==ap2.mac_address)
 
+    for c_data in calibrating_data:
+        loc = c_data.location
+
+        all_samples = session.query(Sample).filter(Sample.source_address==ap2.mac_address, Sample.timestamp>=(time.time()-1))
+        
+        if(all_samples != None):
+            for sample in all_samples:
+                fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc, ap=sample.ap)
+                session.add(fingerprint_value)
+    
     # confirm the transactions
     # session.commit() 
 
@@ -180,3 +191,4 @@ def locate():
     mac_addr = request.args['mac_addr']
     samples = session.query(Sample).filter(Sample.source_address==mac_addr, Sample.timestamp>=(time.time()-1))
     return None
+    
