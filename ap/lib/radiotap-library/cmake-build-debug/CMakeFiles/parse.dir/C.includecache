@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/abou/Documents/Cours/M1-IOT-S2/Positioning techniques and systems/apNew/lib/radiotap-library/parse.c
+sys/types.h
+-
+sys/stat.h
+-
+sys/mman.h
+-
+fcntl.h
+-
+unistd.h
+-
+stdio.h
+-
+errno.h
+-
+string.h
+-
+machine/endian.h
+-
+endian.h
+-
+radiotap_iter.h
+/home/abou/Documents/Cours/M1-IOT-S2/Positioning techniques and systems/apNew/lib/radiotap-library/radiotap_iter.h
+
+/home/abou/Documents/Cours/M1-IOT-S2/Positioning techniques and systems/apNew/lib/radiotap-library/radiotap.h
+libkern/OSByteOrder.h
+-
+machine/endian.h
+-
+
+/home/abou/Documents/Cours/M1-IOT-S2/Positioning techniques and systems/apNew/lib/radiotap-library/radiotap_iter.h
+stdint.h
+-
+radiotap.h
+/home/abou/Documents/Cours/M1-IOT-S2/Positioning techniques and systems/apNew/lib/radiotap-library/radiotap.h
+

@@ -1,6 +1,6 @@
-#include <defines.h>
-#include <http.h>
-#include <pcap_handler.h>
+#include "defines.h"
+#include "http.h"
+#include "pcap_handler.h"
 #include <iostream>
 #include <pcap.h>
 #include <getopt.h>
@@ -13,8 +13,8 @@
 #include <linux/if.h>
 #include <netdb.h>
 #include <cstring>
-#include "config.h"
-
+#include "config/config.h"
+#include <pcap/pcap.h>
 using namespace std;
 
 /*
@@ -48,8 +48,9 @@ pcap_t *pcap_hdl = nullptr;
  * */
 void sigint_handler(int sig) {
   if (sig == SIGINT) {
-    if (pcap_hdl)
-      pcap_breakloop(pcap_hdl);
+    if (pcap_hdl){
+         pcap_breakloop(pcap_hdl);
+    }
   }
 }
 
@@ -73,8 +74,8 @@ int main(int argc, char *argv[]) {
 
   pcap_hdl = pcap_open_live(iface_name.c_str(), BUFSIZ, 1, 100, errbuf);
   if (pcap_hdl == nullptr) {
-    cout << "Could not open PCAP on interface" << iface_name << endl;
-    return -1;
+    std::cout << "Could not open PCAP on interface" << iface_name << endl;
+      return -1;
   }
 
   pcap_handler_user_data pcap_user_data;

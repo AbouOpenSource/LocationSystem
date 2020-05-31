@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/abou/CLionProjects/apNew/lib/radiotap-library/platform.h
+stddef.h
+-
+errno.h
+-
+machine/endian.h
+-
+endian.h
+-
+
+/home/abou/CLionProjects/apNew/lib/radiotap-library/radiotap.c
+radiotap_iter.h
+/home/abou/CLionProjects/apNew/lib/radiotap-library/radiotap_iter.h
+platform.h
+/home/abou/CLionProjects/apNew/lib/radiotap-library/platform.h
+
+/home/abou/CLionProjects/apNew/lib/radiotap-library/radiotap.h
+libkern/OSByteOrder.h
+-
+machine/endian.h
+-
+
+/home/abou/CLionProjects/apNew/lib/radiotap-library/radiotap_iter.h
+stdint.h
+-
+radiotap.h
+/home/abou/CLionProjects/apNew/lib/radiotap-library/radiotap.h
+
