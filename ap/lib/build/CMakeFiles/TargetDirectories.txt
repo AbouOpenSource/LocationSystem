@@ -1,0 +1,9 @@
+/home/abou/CLionProjects/apNew/lib/build/CMakeFiles/install/strip.dir
+/home/abou/CLionProjects/apNew/lib/build/CMakeFiles/install/local.dir
+/home/abou/CLionProjects/apNew/lib/build/CMakeFiles/parse.dir
+/home/abou/CLionProjects/apNew/lib/build/CMakeFiles/edit_cache.dir
+/home/abou/CLionProjects/apNew/lib/build/CMakeFiles/radiotap.dir
+/home/abou/CLionProjects/apNew/lib/build/CMakeFiles/install.dir
+/home/abou/CLionProjects/apNew/lib/build/CMakeFiles/radiotap_check.dir
+/home/abou/CLionProjects/apNew/lib/build/CMakeFiles/rebuild_cache.dir
+/home/abou/CLionProjects/apNew/lib/build/CMakeFiles/list_install_components.dir
