@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
 import time
+from fingerprint import SimpleFingerprint, SimpleFingerprintData
 
 app = Flask(__name__)
 
@@ -188,7 +189,54 @@ def locate():
         Use the closest in RSSI algorithm to find a fingerprint sample matching current sample and return its location
     """
     # Your code here
-    mac_addr = request.args['mac_addr']
-    samples = session.query(Sample).filter(Sample.source_address==mac_addr, Sample.timestamp>=(time.time()-1))
-    return None
+    samples = []
+    session = Session()
     
+    mac_addr = request.args['mac_addr']
+    raw_samples = session.query(Sample).filter(Sample.source_address==mac_addr, Sample.timestamp>=(time.time()-1))
+
+    for sample in raw_samples:
+        samples.append((
+            sample.ap.mac_address,
+            sample.rssi
+        ))
+
+    samples_dict = create_sample_dict(samples)
+
+    fingerprint = SimpleFingerprint()
+    raw_fingerprint_value = session.query(FingerprintValue).all()
+
+    for fingerprint_value in raw_fingerprint_value:
+        fingerprint.add_data(
+            fingerprint_value.location,
+            fingerprint_value.ap.mac_address,
+            float(fingerprint_value.rssi)
+        )
+
+    if len(fingerprint.db) == 0:
+        return "Fingerprint database is empty."
+
+    location = fingerprint.closest_in_rssi(sample)
+
+    if location is None:
+        return "Location couldn't be found"
+
+    return "The location calculated is x:{}, y:{} and z:{}".format(location[0], location[1], location[2])
+
+def create_sample_dict(samples):
+
+    temp = {}
+    for sample in samples:
+        data = temp.get(sample[0])
+        if data in None:
+            data = [0, 0]
+            temp[samples[0]] = data
+        data[0] += sample[1]
+        data[1] += 1
+
+    sample = SimpleFingerprintData()
+
+    for mac_addr, data in temp.items():
+        sample.add(mac_addr, data[0]/data[1])
+
+    return sample
