@@ -201,7 +201,12 @@ def locate():
             sample.rssi
         ))
 
-    samples_dict = create_sample_dict(samples)
+    samples_dict = dict(samples)
+
+    sample = SimpleFingerprintData()
+
+    for mac_addr, data in samples_dict.items():
+        sample.add(mac_addr, data)
 
     fingerprint = SimpleFingerprint()
     raw_fingerprint_value = session.query(FingerprintValue).all()
@@ -223,20 +228,3 @@ def locate():
 
     return "The location calculated is x:{}, y:{} and z:{}".format(location[0], location[1], location[2])
 
-def create_sample_dict(samples):
-
-    temp = {}
-    for sample in samples:
-        data = temp.get(sample[0])
-        if data in None:
-            data = [0, 0]
-            temp[samples[0]] = data
-        data[0] += sample[1]
-        data[1] += 1
-
-    sample = SimpleFingerprintData()
-
-    for mac_addr, data in temp.items():
-        sample.add(mac_addr, data[0]/data[1])
-
-    return sample
