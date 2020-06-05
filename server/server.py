@@ -102,7 +102,7 @@ def rssi():
 
         all_samples = session.query(Sample).filter(Sample.source_address==ap2.mac_address, Sample.timestamp>=(time.time()-1))
         
-        if(all_samples != None):
+        if(all_samples is not None):
             for sample in all_samples:
                 fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc, ap=sample.ap)
                 session.add(fingerprint_value)
@@ -153,7 +153,7 @@ def start_calibration():
     
     all_samples = session.query(Sample).filter(Sample.source_address==mac_addr, Sample.timestamp>=(time.time()-1))
     
-    if(all_samples != None):
+    if(all_samples is not None):
         for sample in all_samples:
             fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc, ap=sample.ap)
             session.add(fingerprint_value)
