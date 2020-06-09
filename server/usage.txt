@@ -1,0 +1,5 @@
+To run the server:
+
+1: go inside the folder /server
+2: type-> export FLASK_APP=server.py
+3: type-> flask run
