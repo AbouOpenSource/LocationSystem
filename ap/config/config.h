@@ -14,13 +14,14 @@ class Configuration {
     void setServerHost(const std::string &srv) { server_host = srv; }
     void setServerPort(unsigned short p) { server_port = p; }
     void setMyLocationFromString(const std::string &loc);
+    std::string getHttpPath();
 
     friend std::ostream &operator<<(std::ostream &os, const Configuration &me);
 
   private:
     std::string server_host{"127.0.0.1"};
     unsigned short server_port{5000};
-//    OGRPoint my_location;
+    //OGRPoint my_location;
     static Configuration *instance;
 
     Configuration() {}

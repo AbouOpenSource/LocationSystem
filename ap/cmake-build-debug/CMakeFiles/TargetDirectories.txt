@@ -1,3 +1,3 @@
-/home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles/apNew.dir
+/home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles/apNew.dir
