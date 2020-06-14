@@ -62,7 +62,9 @@ void sigint_handler(int sig) {
  * \TODO: implement new options and use config singleton to store cfg values.
  * */
 int main(int argc, char *argv[]) {
-  string iface_name{"wlp2s0"};
+  string iface_name{"wlp2s0mon"};
+//    string iface_name{"lo"};
+
   int opt;
   opt = getopt(argc, argv, "i:");
   if (opt == 'i') {
@@ -73,7 +75,7 @@ int main(int argc, char *argv[]) {
   signal(SIGINT, sigint_handler);
 
   char errbuf[PCAP_ERRBUF_SIZE];
-  Util::displayListInterface();
+  //Util::displayListInterface();
   pcap_hdl = pcap_open_live(iface_name.c_str(), BUFSIZ, 1, 100, errbuf);
   if (pcap_hdl == nullptr) {
     std::cout << "Could not open PCAP on interface" << iface_name << endl;
@@ -85,7 +87,7 @@ int main(int argc, char *argv[]) {
   pcap_user_data.ap_mac_addr = get_mac_address(iface_name);
   cout << "Starting capture on interface " << iface_name
        << " (MAC: " << pcap_user_data.ap_mac_addr << ")" << endl;
-  pcap_loop(pcap_hdl, -1, process_pkts, (u_char *) &pcap_user_data);
+    pcap_loop(pcap_hdl, -1, process_pkts, (u_char *) &pcap_user_data);
 
   return 0;
 }

@@ -1,7 +1,12 @@
+#include <cmath>
 #include <fstream>
 #include "http.h"
+#include "utils/Position.h"
+#include "config/config.h"
 #include <Poco/URI.h>
+#include<numeric>
 
+float convertToDBm(float d);
 
 bool doRequest(Poco::Net::HTTPClientSession& session, Poco::Net::HTTPRequest& request, Poco::Net::HTTPResponse& response)
 {
@@ -12,22 +17,41 @@ bool doRequest(Poco::Net::HTTPClientSession& session, Poco::Net::HTTPRequest& re
 
 }
 
+/**
+ * @reauest form curl http://server_host:server_port/start_calibration?mac_addr=my_mac&x=my_x&y=my_y&z=my_z
+ * @param samples
+ * @param ap_mac_addr
+ */
+bool sendStartCalibration(Position *position, const std::string& ap_mac_addr) {
+    Configuration *configuration = Configuration::getInstance();
 
 
 
+    Poco::URI uri(configuration->getHttpPath()+"/start_calibration");
+    std::string path(uri.getPathAndQuery());
+    if (path.empty())
+    {
+        path = "/";
+    }
+    uri.addQueryParameter("mac_addr",ap_mac_addr);
+    uri.addQueryParameter("x",std::to_string(position->getX()));
+    uri.addQueryParameter("y",std::to_string(position->getY()));
+    uri.addQueryParameter("z",std::to_string(position->getZ()));
 
 
+    Poco::Net::HTTPClientSession session(uri.getHost(), uri.getPort());
+    Poco::Net::HTTPRequest request(Poco::Net::HTTPRequest::HTTP_GET, path);
+    Poco::Net::HTTPResponse response;
 
+    if (!doRequest(session, request, response)) {
 
+        std::cout << "Can not send the data : Error " << response.getStatus()<<std::endl;
+        return false;
+    }{
+        return true;
+    }
 
-
-
-
-
-
-
-
-
+}
 
 
 
@@ -49,52 +73,53 @@ void send_samples(RSSILog samples, std::string ap_mac_addr) {
    * */
   // TODO: your code here
 
-
-
-    Poco::URI uri("http://localhost:5000/rssi");
-    // prepare path
+    Configuration *configuration = Configuration::getInstance();
+    Poco::URI uri(configuration->getHttpPath()+"/rssi");
     std::string path(uri.getPathAndQuery());
-    if (path.empty()) path = "/";
+    if (path.empty())
+    {
+        path = "/";
+    }
 
+    //uri.addQueryParameter("ap",ap_mac_addr);
     std::string params = "?ap=" + ap_mac_addr;
 
-    std::map<std::string, std::vector<int>> samplesMap;
+    std::map<std::string, std::vector<int>> mapMacRssiVector;
 
-    for (RSSISample sample: samples) {
-        samplesMap[sample.mac_address].push_back(sample.rssi);
+    for (const RSSISample& sample: samples) {
+        mapMacRssiVector[sample.mac_address].push_back(sample.rssi);
     }
 
-    std::map<std::string, double> finalArray;
+    std::map<std::string, double> arrayOfMean;
 
-    for (auto const &val: samplesMap) {
-        // val.first -> key
-        // val.second -> value
-        float sum = 0;
-        float mean = 0;
-        std::vector<int> actualVector = val.second;
-        for (int i = 0; i < actualVector.size(); i++) {
-            //sum += converToMW(actualVector[i]);
-            sum += actualVector[i];
+    for (auto const &item: mapMacRssiVector) {
+        std::vector<int> vectorOf = item.second;
+        arrayOfMean[item.first]={ std::accumulate(vectorOf.begin(), vectorOf.end(), 0.0)/vectorOf.size() };
 
-        }
-        //mean = convertToDBm(sum / actualVector.size());
-        mean = sum / actualVector.size();
-
-        finalArray[val.first] = mean;
     }
-
-    for (auto const &val: finalArray) {
-        params += "&" + val.first + "=" + std::to_string(val.second);
+   // path += params;
+    for(auto & item : arrayOfMean) {
+        //uri.addQueryParameter(item.first,std::to_string(item.second));
+        params += "&" + item.first + "=" + std::to_string(item.second);
     }
-
     path += params;
-    //Poco::Net::HTTPClientSession session(uri.getHost(), uri.getPort());
-    Poco::Net::HTTPRequest request(Poco::Net::HTTPRequest::HTTP_GET, path);
-    //Poco::Net::HTTPResponse response;
+    std::cout << uri.getPath();
+    std::cout<<"The query is :  "<<path<< ""<< std::endl;
 
-   /* if (!doRequest(session, request, response)) {
-        std::cout << "Failed to send anything." << std::endl;
+    Poco::Net::HTTPClientSession session(uri.getHost(), uri.getPort());
+    Poco::Net::HTTPRequest request(Poco::Net::HTTPRequest::HTTP_GET, path);
+    Poco::Net::HTTPResponse response;
+
+    if (!doRequest(session, request, response)) {
+        std::cout << "Can not send the data : Error " << response.getStatus()<<std::endl;
     }
-*/
+
 }
 
+float convertToDBm(float val) {
+    return std::log10(val) * 10;
+}
+
+float converToMW(int val) {
+    return (float) pow(10.0, val / 10.0);
+}

@@ -92,6 +92,8 @@ def rssi():
         if(d != 'ap'):
             sample = Sample(ap_id=ap2.id, source_address=d, timestamp=time.time(), rssi=raw_data[d],ap=ap2)
             session.add(sample)
+
+    session.commit()
         # print('key is {} and value is {}'.format(d, raw_data[d]))
     
 

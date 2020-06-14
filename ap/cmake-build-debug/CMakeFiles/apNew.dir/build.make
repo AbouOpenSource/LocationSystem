@@ -43,10 +43,10 @@ RM = /opt/soft/clion-2020.1.1/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/abou/PycharmProjects/lab.git/ap
+CMAKE_SOURCE_DIR = /home/abou/PycharmProjects/LocationSystem/ap
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug
+CMAKE_BINARY_DIR = /home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/apNew.dir/depend.make
@@ -59,68 +59,81 @@ include CMakeFiles/apNew.dir/flags.make
 
 CMakeFiles/apNew.dir/pcap.cpp.o: CMakeFiles/apNew.dir/flags.make
 CMakeFiles/apNew.dir/pcap.cpp.o: ../pcap.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/apNew.dir/pcap.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/apNew.dir/pcap.cpp.o -c /home/abou/PycharmProjects/lab.git/ap/pcap.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/apNew.dir/pcap.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/apNew.dir/pcap.cpp.o -c /home/abou/PycharmProjects/LocationSystem/ap/pcap.cpp
 
 CMakeFiles/apNew.dir/pcap.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/apNew.dir/pcap.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/abou/PycharmProjects/lab.git/ap/pcap.cpp > CMakeFiles/apNew.dir/pcap.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/abou/PycharmProjects/LocationSystem/ap/pcap.cpp > CMakeFiles/apNew.dir/pcap.cpp.i
 
 CMakeFiles/apNew.dir/pcap.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/apNew.dir/pcap.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/abou/PycharmProjects/lab.git/ap/pcap.cpp -o CMakeFiles/apNew.dir/pcap.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/abou/PycharmProjects/LocationSystem/ap/pcap.cpp -o CMakeFiles/apNew.dir/pcap.cpp.s
 
 CMakeFiles/apNew.dir/config/config.cpp.o: CMakeFiles/apNew.dir/flags.make
 CMakeFiles/apNew.dir/config/config.cpp.o: ../config/config.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/apNew.dir/config/config.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/apNew.dir/config/config.cpp.o -c /home/abou/PycharmProjects/lab.git/ap/config/config.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/apNew.dir/config/config.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/apNew.dir/config/config.cpp.o -c /home/abou/PycharmProjects/LocationSystem/ap/config/config.cpp
 
 CMakeFiles/apNew.dir/config/config.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/apNew.dir/config/config.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/abou/PycharmProjects/lab.git/ap/config/config.cpp > CMakeFiles/apNew.dir/config/config.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/abou/PycharmProjects/LocationSystem/ap/config/config.cpp > CMakeFiles/apNew.dir/config/config.cpp.i
 
 CMakeFiles/apNew.dir/config/config.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/apNew.dir/config/config.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/abou/PycharmProjects/lab.git/ap/config/config.cpp -o CMakeFiles/apNew.dir/config/config.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/abou/PycharmProjects/LocationSystem/ap/config/config.cpp -o CMakeFiles/apNew.dir/config/config.cpp.s
 
 CMakeFiles/apNew.dir/http.cpp.o: CMakeFiles/apNew.dir/flags.make
 CMakeFiles/apNew.dir/http.cpp.o: ../http.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/apNew.dir/http.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/apNew.dir/http.cpp.o -c /home/abou/PycharmProjects/lab.git/ap/http.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/apNew.dir/http.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/apNew.dir/http.cpp.o -c /home/abou/PycharmProjects/LocationSystem/ap/http.cpp
 
 CMakeFiles/apNew.dir/http.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/apNew.dir/http.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/abou/PycharmProjects/lab.git/ap/http.cpp > CMakeFiles/apNew.dir/http.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/abou/PycharmProjects/LocationSystem/ap/http.cpp > CMakeFiles/apNew.dir/http.cpp.i
 
 CMakeFiles/apNew.dir/http.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/apNew.dir/http.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/abou/PycharmProjects/lab.git/ap/http.cpp -o CMakeFiles/apNew.dir/http.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/abou/PycharmProjects/LocationSystem/ap/http.cpp -o CMakeFiles/apNew.dir/http.cpp.s
 
 CMakeFiles/apNew.dir/pcap_handler.cpp.o: CMakeFiles/apNew.dir/flags.make
 CMakeFiles/apNew.dir/pcap_handler.cpp.o: ../pcap_handler.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/apNew.dir/pcap_handler.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/apNew.dir/pcap_handler.cpp.o -c /home/abou/PycharmProjects/lab.git/ap/pcap_handler.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/apNew.dir/pcap_handler.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/apNew.dir/pcap_handler.cpp.o -c /home/abou/PycharmProjects/LocationSystem/ap/pcap_handler.cpp
 
 CMakeFiles/apNew.dir/pcap_handler.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/apNew.dir/pcap_handler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/abou/PycharmProjects/lab.git/ap/pcap_handler.cpp > CMakeFiles/apNew.dir/pcap_handler.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/abou/PycharmProjects/LocationSystem/ap/pcap_handler.cpp > CMakeFiles/apNew.dir/pcap_handler.cpp.i
 
 CMakeFiles/apNew.dir/pcap_handler.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/apNew.dir/pcap_handler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/abou/PycharmProjects/lab.git/ap/pcap_handler.cpp -o CMakeFiles/apNew.dir/pcap_handler.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/abou/PycharmProjects/LocationSystem/ap/pcap_handler.cpp -o CMakeFiles/apNew.dir/pcap_handler.cpp.s
 
 CMakeFiles/apNew.dir/utils/Util.cpp.o: CMakeFiles/apNew.dir/flags.make
 CMakeFiles/apNew.dir/utils/Util.cpp.o: ../utils/Util.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/apNew.dir/utils/Util.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/apNew.dir/utils/Util.cpp.o -c /home/abou/PycharmProjects/lab.git/ap/utils/Util.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/apNew.dir/utils/Util.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/apNew.dir/utils/Util.cpp.o -c /home/abou/PycharmProjects/LocationSystem/ap/utils/Util.cpp
 
 CMakeFiles/apNew.dir/utils/Util.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/apNew.dir/utils/Util.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/abou/PycharmProjects/lab.git/ap/utils/Util.cpp > CMakeFiles/apNew.dir/utils/Util.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/abou/PycharmProjects/LocationSystem/ap/utils/Util.cpp > CMakeFiles/apNew.dir/utils/Util.cpp.i
 
 CMakeFiles/apNew.dir/utils/Util.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/apNew.dir/utils/Util.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/abou/PycharmProjects/lab.git/ap/utils/Util.cpp -o CMakeFiles/apNew.dir/utils/Util.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/abou/PycharmProjects/LocationSystem/ap/utils/Util.cpp -o CMakeFiles/apNew.dir/utils/Util.cpp.s
+
+CMakeFiles/apNew.dir/utils/Position.cpp.o: CMakeFiles/apNew.dir/flags.make
+CMakeFiles/apNew.dir/utils/Position.cpp.o: ../utils/Position.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/apNew.dir/utils/Position.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/apNew.dir/utils/Position.cpp.o -c /home/abou/PycharmProjects/LocationSystem/ap/utils/Position.cpp
+
+CMakeFiles/apNew.dir/utils/Position.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/apNew.dir/utils/Position.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/abou/PycharmProjects/LocationSystem/ap/utils/Position.cpp > CMakeFiles/apNew.dir/utils/Position.cpp.i
+
+CMakeFiles/apNew.dir/utils/Position.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/apNew.dir/utils/Position.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/abou/PycharmProjects/LocationSystem/ap/utils/Position.cpp -o CMakeFiles/apNew.dir/utils/Position.cpp.s
 
 # Object files for target apNew
 apNew_OBJECTS = \
@@ -128,7 +141,8 @@ apNew_OBJECTS = \
 "CMakeFiles/apNew.dir/config/config.cpp.o" \
 "CMakeFiles/apNew.dir/http.cpp.o" \
 "CMakeFiles/apNew.dir/pcap_handler.cpp.o" \
-"CMakeFiles/apNew.dir/utils/Util.cpp.o"
+"CMakeFiles/apNew.dir/utils/Util.cpp.o" \
+"CMakeFiles/apNew.dir/utils/Position.cpp.o"
 
 # External object files for target apNew
 apNew_EXTERNAL_OBJECTS =
@@ -138,9 +152,10 @@ apNew: CMakeFiles/apNew.dir/config/config.cpp.o
 apNew: CMakeFiles/apNew.dir/http.cpp.o
 apNew: CMakeFiles/apNew.dir/pcap_handler.cpp.o
 apNew: CMakeFiles/apNew.dir/utils/Util.cpp.o
+apNew: CMakeFiles/apNew.dir/utils/Position.cpp.o
 apNew: CMakeFiles/apNew.dir/build.make
 apNew: CMakeFiles/apNew.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable apNew"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable apNew"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/apNew.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -153,6 +168,6 @@ CMakeFiles/apNew.dir/clean:
 .PHONY : CMakeFiles/apNew.dir/clean
 
 CMakeFiles/apNew.dir/depend:
-	cd /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/abou/PycharmProjects/lab.git/ap /home/abou/PycharmProjects/lab.git/ap /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles/apNew.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/abou/PycharmProjects/LocationSystem/ap /home/abou/PycharmProjects/LocationSystem/ap /home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug /home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug /home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles/apNew.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/apNew.dir/depend
 

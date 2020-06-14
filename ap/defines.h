@@ -32,4 +32,10 @@ struct ieee80211_header
   u_char address4[6];
 };
 
+
+/***********************/
+
+
+
+
 #endif // _DEFINES_H_

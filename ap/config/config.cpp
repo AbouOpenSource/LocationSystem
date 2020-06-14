@@ -4,7 +4,7 @@ using namespace std;
 
 ostream &operator<<(ostream &os, const Configuration &me) {
   os << "Current configuration:" << endl;
-//  os << "\tMy coordinates: (" << me.my_location.getX() << "," << me.my_location.getY() << 
+  //os << "\tMy coordinates: (" << me.my_location.getX() << "," << me.my_location.getY() <<
 //     "," << me.my_location.getZ() << ")" << endl;
   os << "\tServer host and port: " << me.server_host << ":" << me.server_port << endl;
   return os;
@@ -36,3 +36,7 @@ void Configuration::setMyLocationFromString(const string &loc) {
 }
 
 Configuration *Configuration::instance = new Configuration();
+
+std::string Configuration::getHttpPath() {
+    return "http://"+Configuration::getServerHost()+":"+ std::to_string(Configuration::getServerPort());
+}

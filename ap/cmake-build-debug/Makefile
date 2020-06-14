@@ -48,10 +48,10 @@ RM = /opt/soft/clion-2020.1.1/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/abou/PycharmProjects/lab.git/ap
+CMAKE_SOURCE_DIR = /home/abou/PycharmProjects/LocationSystem/ap
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug
+CMAKE_BINARY_DIR = /home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles /home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/abou/PycharmProjects/lab.git/ap/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abou/PycharmProjects/LocationSystem/ap/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -231,6 +231,33 @@ pcap_handler.cpp.s:
 	$(MAKE) -f CMakeFiles/apNew.dir/build.make CMakeFiles/apNew.dir/pcap_handler.cpp.s
 .PHONY : pcap_handler.cpp.s
 
+utils/Position.o: utils/Position.cpp.o
+
+.PHONY : utils/Position.o
+
+# target to build an object file
+utils/Position.cpp.o:
+	$(MAKE) -f CMakeFiles/apNew.dir/build.make CMakeFiles/apNew.dir/utils/Position.cpp.o
+.PHONY : utils/Position.cpp.o
+
+utils/Position.i: utils/Position.cpp.i
+
+.PHONY : utils/Position.i
+
+# target to preprocess a source file
+utils/Position.cpp.i:
+	$(MAKE) -f CMakeFiles/apNew.dir/build.make CMakeFiles/apNew.dir/utils/Position.cpp.i
+.PHONY : utils/Position.cpp.i
+
+utils/Position.s: utils/Position.cpp.s
+
+.PHONY : utils/Position.s
+
+# target to generate assembly for a file
+utils/Position.cpp.s:
+	$(MAKE) -f CMakeFiles/apNew.dir/build.make CMakeFiles/apNew.dir/utils/Position.cpp.s
+.PHONY : utils/Position.cpp.s
+
 utils/Util.o: utils/Util.cpp.o
 
 .PHONY : utils/Util.o
@@ -279,6 +306,9 @@ help:
 	@echo "... pcap_handler.o"
 	@echo "... pcap_handler.i"
 	@echo "... pcap_handler.s"
+	@echo "... utils/Position.o"
+	@echo "... utils/Position.i"
+	@echo "... utils/Position.s"
 	@echo "... utils/Util.o"
 	@echo "... utils/Util.i"
 	@echo "... utils/Util.s"
