@@ -2,6 +2,7 @@ package master.iot.lo53lab;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText serverIPWidget;
     private String macAddress;
 
+    @SuppressLint("HardwareIds")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
     public void startCalibrationRequest(View view){
         String serverIp = String.valueOf(serverIPWidget.getText());
         if(serverIp.equals("")){
-            serverIp = "http://localhost:5000";
+           // serverIp = "http://localhost:5000";
+            serverIp = "http://10.0.2.2:5000";
+
         }
         double x=0;
         double y=0;
@@ -59,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
     public void stopCalibrationRequest(View view){
         String serverIp = String.valueOf(serverIPWidget.getText());
         if(serverIp.equals("")){
-            serverIp = "http://localhost:5000";
+            serverIp = "http://10.0.2.2:5000";
+            // serverIp = "http://localhost:5000";
+
         }
         String url = serverIp + "/stop_calibration?mac_addr="+ macAddress ;
         sendRequest(url);
@@ -68,8 +74,12 @@ public class MainActivity extends AppCompatActivity {
     public void locateRequest(View view){
         String serverIp = String.valueOf(serverIPWidget.getText());
         if(serverIp.equals("")){
-            serverIp = "http://localhost:5000";
+            serverIp = "http://10.0.2.2:5000";
+            // serverIp = "http://localhost:5000";
+
         }
+
+
         String url = serverIp + "/locate?mac_addr="+ macAddress ;
         sendRequest(url);
     }
@@ -85,11 +95,13 @@ public class MainActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+
                 if (response.isSuccessful()) {
                     final String myResponse = response.body().string();
                     MainActivity.this.runOnUiThread(new Runnable() {

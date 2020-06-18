@@ -14,10 +14,12 @@ engine = create_engine('sqlite:///rssi.db')
 base = declarative_base()
 Session = sessionmaker(bind=engine)
 
+
 class AccessPoint(base):
     __tablename__ = "accesspoint"
     id = Column(Integer, primary_key=True)
     mac_address = Column(String)
+
 
 class Location(base):
     __tablename__ = "location"
@@ -25,6 +27,7 @@ class Location(base):
     x = Column(Float)
     y = Column(Float)
     z = Column(Float)
+
 
 class Sample(base):
     __tablename__ = "sample"
@@ -40,6 +43,7 @@ class Sample(base):
         rssi = _rssi
         ap = _ap
 
+
 class FingerprintValue(base):
     __tablename__ = "fingerprint_value"
     id = Column(Integer, primary_key=True)
@@ -49,11 +53,13 @@ class FingerprintValue(base):
     location = relationship("Location", backref="fingerprint_value")
     ap = relationship("AccessPoint", backref="fingerprint_value")
 
+
 class CalibratingMobile(base):
     __tablename__ = "calibrating_mobile"
     mac_address = Column(String, primary_key=True)
     loc_id = Column(Integer, ForeignKey("location.id"))
     location = relationship("Location", backref="calibrating_mobile")
+
 
 # @app.route('/')
 # def hello_world():
@@ -82,38 +88,39 @@ def rssi():
 
     session = Session()
     ap = AccessPoint(mac_address=ap_addr)
-    
+
     session.add(ap)
 
     ap2 = session.query(AccessPoint).first()
 
-
     for d in raw_data:
-        if(d != 'ap'):
-            sample = Sample(ap_id=ap2.id, source_address=d, timestamp=time.time(), rssi=raw_data[d],ap=ap2)
+        if (d != 'ap'):
+            sample = Sample(ap_id=ap2.id, source_address=d, timestamp=time.time(), rssi=raw_data[d], ap=ap2)
             session.add(sample)
 
     session.commit()
-        # print('key is {} and value is {}'.format(d, raw_data[d]))
-    
+    # print('key is {} and value is {}'.format(d, raw_data[d]))
 
-    calibrating_data = session.query(CalibratingMobile).filter(CalibratingMobile.mac_address==ap2.mac_address)
+    calibrating_data = session.query(CalibratingMobile).filter(CalibratingMobile.mac_address == ap2.mac_address)
 
     for c_data in calibrating_data:
         loc = c_data.location
 
-        all_samples = session.query(Sample).filter(Sample.source_address==ap2.mac_address, Sample.timestamp>=(time.time()-1))
-        
-        if(all_samples is not None):
+        all_samples = session.query(Sample).filter(Sample.source_address == ap2.mac_address,
+                                                   Sample.timestamp >= (time.time() - 1))
+
+        if (all_samples is not None):
             for sample in all_samples:
-                fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc, ap=sample.ap)
+                fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc,
+                                                     ap=sample.ap)
                 session.add(fingerprint_value)
-    
+
     # confirm the transactions
     # session.commit() 
 
     # data = request.args.to_dict(flat=False)
     return 'GET \n'
+
 
 @app.route("/start_calibration", methods=['GET', 'POST'])
 def start_calibration():
@@ -135,34 +142,33 @@ def start_calibration():
 
     print(request.args)
     raw_data = request.args
-    
+
     mac_addr = raw_data['mac_addr']
     x = raw_data['x']
     y = raw_data['y']
     z = raw_data['z']
 
     location = Location(x=x, y=y, z=z)
-
+    print(location)
     # add the location coordinates to the location table
     session.add(location)
 
     loc = session.query(Location).first()
-    print('location is {}'.format(loc_id))
+    print('location is {}'.format(loc.id))
 
-    calibrating_mobile = CalibratingMobile(mac_address=mac_addr, loc_id=loc_id, location=location)
+    calibrating_mobile = CalibratingMobile(mac_address=mac_addr, loc_id=loc.id, location=location)
     # add the calibrating data to the table
     session.add(calibrating_mobile)
-    
-    all_samples = session.query(Sample).filter(Sample.source_address==mac_addr, Sample.timestamp>=(time.time()-1))
-    
-    if(all_samples is not None):
+
+    all_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1))
+
+    if all_samples is not None:
         for sample in all_samples:
-            fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc, ap=sample.ap)
+            fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc,
+                                                 ap=sample.ap)
             session.add(fingerprint_value)
-    
-    # session.commit() # confirm the sql transaction
 
-
+    session.commit()  # confirm the sql transaction
 
     return "Calibration started."
 
@@ -193,9 +199,9 @@ def locate():
     # Your code here
     samples = []
     session = Session()
-    
+
     mac_addr = request.args['mac_addr']
-    raw_samples = session.query(Sample).filter(Sample.source_address==mac_addr, Sample.timestamp>=(time.time()-1))
+    raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1))
 
     for sample in raw_samples:
         samples.append((
@@ -229,4 +235,3 @@ def locate():
         return "Location couldn't be found"
 
     return "The location calculated is x:{}, y:{} and z:{}".format(location[0], location[1], location[2])
-
