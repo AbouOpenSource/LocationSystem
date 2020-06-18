@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">LO53 Lab</string>
+    <string name="serverIp">Server IP</string>
+    <string name="startCalibration">Start Calibration</string>
+    <string name="stopCalibration">Stop Calibration</string>
+    <string name="locate">Locate</string>
+</resources>
