@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">LO53 Lab</string>
+    <string name="serverIp">http://server_host:server_port</string>
+    <string name="startCalibration">Start Calibration</string>
+    <string name="stopCalibration">Stop Calibration</string>
+    <string name="locate">Locate</string>
+    <string name="requestResult">result of request</string>
+</resources>
