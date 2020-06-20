@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         double y=0;
         double z=0;
 
-        String url = serverIp + "/start_calibration?mac_addr==" + macAddress + "&x=" + x + "&y=" + y + "&z=" + z;
+        String url = serverIp + "/start_calibration?mac_addr=" + macAddress + "&x=" + x + "&y=" + y + "&z=" + z;
         sendRequest(url);
     }
 

@@ -160,7 +160,7 @@ def start_calibration():
     # add the calibrating data to the table
     session.add(calibrating_mobile)
 
-    all_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1))
+    all_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1)).all()
 
     if all_samples is not None:
         for sample in all_samples:
@@ -181,9 +181,11 @@ def stop_calibration():
         It must delete any calibrating_mobile entry whose mac_address equal parameter mac_addr
     """
     # Your code here
-    mac_addr = request.args['mac_addr']
-    delete(CalibratingMobile).where(mac_address=mac_addr)
+    session = Session()
 
+    mac_addr = request.args['mac_addr']
+    session.query(CalibratingMobile).filter(CalibratingMobile.mac_address == mac_addr).delete()
+    session.commit()
     return "Calibration Stopped"
 
 
@@ -201,8 +203,10 @@ def locate():
     session = Session()
 
     mac_addr = request.args['mac_addr']
-    raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1))
-
+    raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1)).all()
+    print(raw_samples)
+    if raw_samples is None:
+        print("Raw_sampls is None")
     for sample in raw_samples:
         samples.append((
             sample.ap.mac_address,
@@ -218,12 +222,13 @@ def locate():
 
     fingerprint = SimpleFingerprint()
     raw_fingerprint_value = session.query(FingerprintValue).all()
+    #print(raw_fingerprint_value)
 
     for fingerprint_value in raw_fingerprint_value:
         fingerprint.add_data(
             fingerprint_value.location,
             fingerprint_value.ap.mac_address,
-            float(fingerprint_value.rssi)
+            fingerprint_value.rssi
         )
 
     if len(fingerprint.db) == 0:
