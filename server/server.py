@@ -101,22 +101,20 @@ def rssi():
     session.commit()
     # print('key is {} and value is {}'.format(d, raw_data[d]))
 
-    calibrating_data = session.query(CalibratingMobile).filter(CalibratingMobile.mac_address == ap2.mac_address)
+    calibrating_data = session.query(CalibratingMobile).filter(CalibratingMobile.mac_address == ap2.mac_address).all()
 
     for c_data in calibrating_data:
         loc = c_data.location
 
-        all_samples = session.query(Sample).filter(Sample.source_address == ap2.mac_address,
-                                                   Sample.timestamp >= (time.time() - 1))
+        all_samples = session.query(Sample).filter(Sample.source_address == ap2.mac_address, Sample.timestamp >= (time.time() - 1)).all()
 
         if (all_samples is not None):
             for sample in all_samples:
-                fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc,
-                                                     ap=sample.ap)
+                fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc, ap=sample.ap)
                 session.add(fingerprint_value)
 
     # confirm the transactions
-    # session.commit() 
+    session.commit() 
 
     # data = request.args.to_dict(flat=False)
     return 'GET \n'
@@ -164,8 +162,7 @@ def start_calibration():
 
     if all_samples is not None:
         for sample in all_samples:
-            fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc,
-                                                 ap=sample.ap)
+            fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc, ap=sample.ap)
             session.add(fingerprint_value)
 
     session.commit()  # confirm the sql transaction
@@ -181,11 +178,9 @@ def stop_calibration():
         It must delete any calibrating_mobile entry whose mac_address equal parameter mac_addr
     """
     # Your code here
-    session = Session()
-
     mac_addr = request.args['mac_addr']
-    session.query(CalibratingMobile).filter(CalibratingMobile.mac_address == mac_addr).delete()
-    session.commit()
+    delete(CalibratingMobile).where(mac_address=mac_addr)
+
     return "Calibration Stopped"
 
 
@@ -203,10 +198,8 @@ def locate():
     session = Session()
 
     mac_addr = request.args['mac_addr']
-    raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1)).all()
-    print(raw_samples)
-    if raw_samples is None:
-        print("Raw_sampls is None")
+    raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1))
+
     for sample in raw_samples:
         samples.append((
             sample.ap.mac_address,
@@ -222,21 +215,20 @@ def locate():
 
     fingerprint = SimpleFingerprint()
     raw_fingerprint_value = session.query(FingerprintValue).all()
-    #print(raw_fingerprint_value)
 
     for fingerprint_value in raw_fingerprint_value:
         fingerprint.add_data(
             fingerprint_value.location,
             fingerprint_value.ap.mac_address,
-            fingerprint_value.rssi
+            float(fingerprint_value.rssi)
         )
 
     if len(fingerprint.db) == 0:
-        return "Fingerprint database is empty."
+        return "Fingerprint database is empty.\n"
 
     location = fingerprint.closest_in_rssi(sample)
 
     if location is None:
-        return "Location couldn't be found"
+        return "Location couldn't be found\n"
 
-    return "The location calculated is x:{}, y:{} and z:{}".format(location[0], location[1], location[2])
+    return "The location calculated is x:{}, y:{} and z:{}\n".format(location[0], location[1], location[2])
