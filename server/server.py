@@ -180,7 +180,7 @@ def stop_calibration():
     session = Session()	
 
     mac_addr = request.args['mac_addr']
-    session.query(CalibratingMobile).filter(CalibratingMobile.mac_address==mac_addr).delete()	    delete(CalibratingMobile).where(mac_address=mac_addr)
+    session.query(CalibratingMobile).filter(CalibratingMobile.mac_address==mac_addr).delete()
     session.commit()
 
     return "Calibration Stopped"
