@@ -177,9 +177,11 @@ def stop_calibration():
         It receives one parameter: mac_addr (string)
         It must delete any calibrating_mobile entry whose mac_address equal parameter mac_addr
     """
-    # Your code here
-    mac_addr = request.args['mac_addr']
-    delete(CalibratingMobile).where(mac_address=mac_addr)
+    session = Session()	
+
+    mac_addr = request.args['mac_addr']	    mac_addr = request.args['mac_addr']
+    session.query(CalibratingMobile).filter(CalibratingMobile.mac_address==mac_addr).delete()	    delete(CalibratingMobile).where(mac_address=mac_addr)
+    session.commit()
 
     return "Calibration Stopped"
 
