@@ -20,6 +20,9 @@ class AccessPoint(base):
     id = Column(Integer, primary_key=True)
     mac_address = Column(String)
 
+    def __init__(self, _mac_address):
+        self.mac_address = _mac_address
+
 
 class Location(base):
     __tablename__ = "location"
@@ -27,6 +30,11 @@ class Location(base):
     x = Column(Float)
     y = Column(Float)
     z = Column(Float)
+    
+    def __init__(self, _x, _y, _z):
+        self.x = _x
+        self.y = _y
+        self.z = _z
 
 
 class Sample(base):
@@ -83,26 +91,28 @@ def rssi():
     ap_addr = raw_data['ap']
 
     session = Session()
-    ap = AccessPoint(mac_address=ap_addr)
+    ap = session.query(AccessPoint).filter(AccessPoint.mac_address==ap_addr).first()
 
-    session.add(ap)
+    # print('ap is : {}'.format(ap))
 
-    ap2 = session.query(AccessPoint).first()
+    if(ap is None):
+        ap = AccessPoint(ap_addr)
+        session.add(ap)
+        session.commit()    
 
     for d in raw_data:
         if (d != 'ap'):
-            sample = Sample(ap_id=ap2.id, source_address=d, timestamp=time.time(), rssi=raw_data[d], ap=ap2)
+            sample = Sample(ap_id=ap.id, source_address=d, timestamp=time.time(), rssi=raw_data[d], ap=ap)
             session.add(sample)
 
     session.commit()
-    # print('key is {} and value is {}'.format(d, raw_data[d]))
-
-    calibrating_data = session.query(CalibratingMobile).filter(CalibratingMobile.mac_address == ap2.mac_address).all()
+    
+    calibrating_data = session.query(CalibratingMobile).filter(CalibratingMobile.mac_address == ap.mac_address).all()
 
     for c_data in calibrating_data:
         loc = c_data.location
 
-        all_samples = session.query(Sample).filter(Sample.source_address == ap2.mac_address, Sample.timestamp >= (time.time() - 1)).all()
+        all_samples = session.query(Sample).filter(Sample.source_address == ap.mac_address, Sample.timestamp >= (time.time() - 1)).all()
 
         if (all_samples is not None):
             for sample in all_samples:
@@ -114,7 +124,7 @@ def rssi():
     session.close()
 
     # data = request.args.to_dict(flat=False)
-    return 'GET \n'
+    return 'RSSI Samples and AP added to database. \n'
 
 
 @app.route("/start_calibration", methods=['GET', 'POST'])
@@ -147,11 +157,11 @@ def start_calibration():
     print(location)
     # add the location coordinates to the location table
     session.add(location)
+    session.commit()
 
-    loc = session.query(Location).first()
-    print('location is {}'.format(loc.id))
+    print('location is {}'.format(location.id))
 
-    calibrating_mobile = CalibratingMobile(mac_address=mac_addr, loc_id=loc.id, location=location)
+    calibrating_mobile = CalibratingMobile(mac_address=mac_addr, loc_id=location.id, location=location)
     # add the calibrating data to the table
     session.add(calibrating_mobile)
 
@@ -159,7 +169,7 @@ def start_calibration():
 
     if all_samples is not None:
         for sample in all_samples:
-            fingerprint_value = FingerprintValue(loc_id=loc.id, ap_id=sample.ap.id, rssi=sample.rssi, location=loc, ap=sample.ap)
+            fingerprint_value = FingerprintValue(loc_id=location.id, ap_id=sample.ap.id, rssi=sample.rssi, location=location, ap=sample.ap)
             session.add(fingerprint_value)
 
     session.commit()  # confirm the sql transaction
