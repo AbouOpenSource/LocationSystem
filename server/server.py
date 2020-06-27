@@ -161,9 +161,13 @@ def start_calibration():
 
     print('location is {}'.format(location.id))
 
-    calibrating_mobile = CalibratingMobile(mac_address=mac_addr, loc_id=location.id, location=location)
-    # add the calibrating data to the table
-    session.add(calibrating_mobile)
+    calibrating_mobile = session.query(CalibratingMobile).filter(CalibratingMobile.mac_address==mac_addr).first()
+    if(calibrating_mobile is not None):
+        return 'Calibration already started for this address.'
+    else:    
+        calibrating_mobile = CalibratingMobile(mac_address=mac_addr, loc_id=location.id, location=location)
+        # add the calibrating data to the table
+        session.add(calibrating_mobile)
 
     all_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1)).all()
 
