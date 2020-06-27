@@ -61,10 +61,6 @@ class CalibratingMobile(base):
     location = relationship("Location", backref="calibrating_mobile")
 
 
-# @app.route('/')
-# def hello_world():
-#     return 'Hello, World!'
-
 @app.route("/rssi", methods=['GET', 'POST'])
 def rssi():
     """
@@ -115,6 +111,7 @@ def rssi():
 
     # confirm the transactions
     session.commit() 
+    session.close()
 
     # data = request.args.to_dict(flat=False)
     return 'GET \n'
@@ -166,6 +163,7 @@ def start_calibration():
             session.add(fingerprint_value)
 
     session.commit()  # confirm the sql transaction
+    session.close()
 
     return "Calibration started."
 
@@ -182,6 +180,7 @@ def stop_calibration():
     mac_addr = request.args['mac_addr']
     session.query(CalibratingMobile).filter(CalibratingMobile.mac_address==mac_addr).delete()
     session.commit()
+    session.close()
 
     return "Calibration Stopped"
 
@@ -200,23 +199,38 @@ def locate():
     session = Session()
 
     mac_addr = request.args['mac_addr']
-    raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1))
+    # raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1)).all()
+    raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr).all()
 
+    # for sample in raw_samples:
+    #     samples.append((
+    #         sample.ap.mac_address,
+    #         sample.rssi
+    #     ))
+
+    samples_dict = {} 
     for sample in raw_samples:
-        samples.append((
-            sample.ap.mac_address,
-            sample.rssi
-        ))
-
-    samples_dict = dict(samples)
+        if(sample.source_address in samples_dict):
+            tr = samples_dict[sample.source_address]
+            tr[0] += sample.rssi
+            tr[1] += 1
+        else:
+            samples_dict[sample.source_address] = [sample.rssi, 1]
 
     sample = SimpleFingerprintData()
 
-    for mac_addr, data in samples_dict.items():
-        sample.add(mac_addr, data)
+    # for mac_addr, data in samples_dict.items():
+    #     sample.add(mac_addr, data)
+
+    for mac, val in samples_dict.items(): # To add datas to sample_fingerprint dictionnary for the location
+        sample.add(mac, val[0]/val[1])
+
 
     fingerprint = SimpleFingerprint()
     raw_fingerprint_value = session.query(FingerprintValue).all()
+
+    print('raw fingerprint data is \n')
+    print(raw_fingerprint_value)
 
     for fingerprint_value in raw_fingerprint_value:
         fingerprint.add_data(
@@ -230,7 +244,12 @@ def locate():
 
     location = fingerprint.closest_in_rssi(sample)
 
+    print('location is \n')
+    print(location)
+    print('x:{}\ny:{}\nz:{}\n'.format(location.x, location.y, location.z))
+
     if location is None:
         return "Location couldn't be found\n"
 
-    return "The location calculated is x:{}, y:{} and z:{}\n".format(location[0], location[1], location[2])
+    # return 'good\n'
+    return "The location calculated is x:{}, y:{} and z:{}\n".format(location.x, location.y, location.z)

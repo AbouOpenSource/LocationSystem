@@ -43,11 +43,10 @@ class SimpleFingerprint():
         self.db = {}
 
     def add_data(self, location, mac_addr, rssi):
-        
         fingerprint_record = self.db.get(location)
 
         if fingerprint_record is None:
-            fingerprint_record = FingerprintRecord()
+            fingerprint_record = SimpleFingerprintData()
             self.db[location] = fingerprint_record
 
         fingerprint_record.add(mac_addr, rssi)
@@ -61,9 +60,11 @@ class SimpleFingerprint():
         Returns a list of (at most) k locations
     """
     def k_closest_in_rssi(self, sample, k):
+        # print('sample is \n')
+        # print(sample)
         dists = []
-        for data in self.db.items():
-            dists.append((data.location, data.RSSIDistance(sample))) 
+        for data in self.db:
+            dists.append((data, self.db[data].RSSIDistance(sample.sample))) 
 
         dists.sort(key = lambda x: x[1])
 
