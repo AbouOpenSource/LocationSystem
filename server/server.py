@@ -145,7 +145,7 @@ def start_calibration():
     # Your code here
     session = Session()
 
-    print(request.args)
+    print('request args {}'.format(request.args))
     raw_data = request.args
 
     mac_addr = raw_data['mac_addr']
@@ -153,7 +153,7 @@ def start_calibration():
     y = raw_data['y']
     z = raw_data['z']
 
-    location = Location(x=x, y=y, z=z)
+    location = Location(x, y, z)
     print(location)
     # add the location coordinates to the location table
     session.add(location)
@@ -163,14 +163,14 @@ def start_calibration():
 
     calibrating_mobile = session.query(CalibratingMobile).filter(CalibratingMobile.mac_address==mac_addr).first()
     if(calibrating_mobile is not None):
-        return 'Calibration already started for this address.'
+        print('Calibration already started for this address.\n')
     else:    
         calibrating_mobile = CalibratingMobile(mac_address=mac_addr, loc_id=location.id, location=location)
         # add the calibrating data to the table
         session.add(calibrating_mobile)
 
-    all_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1)).all()
-
+    # all_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1)).all()
+    all_samples = session.query(Sample).filter(Sample.source_address == mac_addr).all()
     if all_samples is not None:
         for sample in all_samples:
             fingerprint_value = FingerprintValue(loc_id=location.id, ap_id=sample.ap.id, rssi=sample.rssi, location=location, ap=sample.ap)
@@ -179,7 +179,7 @@ def start_calibration():
     session.commit()  # confirm the sql transaction
     session.close()
 
-    return "Calibration started."
+    return "Calibration started.\n"
 
 
 @app.route("/stop_calibration", methods=['GET', 'POST'])
