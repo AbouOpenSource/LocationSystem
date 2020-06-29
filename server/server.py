@@ -1,10 +1,11 @@
 from flask import Flask
-from flask import request
+from flask import request, jsonify
 
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, delete
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
+import re
 import time
 from fingerprint import SimpleFingerprint, SimpleFingerprintData
 
@@ -84,16 +85,28 @@ def rssi():
         prompt through the command .schema
         SQL Alchemy ORM classes and initialization are available above
     """
-
-    raw_data = request.args
-    print(raw_data)
+    if request.method == 'POST':
+        raw_data = request.values
+    else:
+        raw_data = request.args
 
     ap_addr = raw_data['ap']
 
+    if not validateMAC(ap_addr):
+        return 'AP mac address is not valid.\n'
+
+    print('raw data is \n')
+    print(raw_data)
+
+    # for d in raw_data:
+    #     if (d != 'ap'):
+    #         print('here')
+    #         if not validateMAC(d):
+    #             return 'MAC address of one of the measured device is not valid.\n'
+
+
     session = Session()
     ap = session.query(AccessPoint).filter(AccessPoint.mac_address==ap_addr).first()
-
-    # print('ap is : {}'.format(ap))
 
     if(ap is None):
         ap = AccessPoint(ap_addr)
@@ -102,6 +115,8 @@ def rssi():
 
     for d in raw_data:
         if (d != 'ap'):
+            if not validateMAC(d):
+                return 'MAC address of one of the measured device is not valid.\n'
             sample = Sample(ap_id=ap.id, source_address=d, timestamp=time.time(), rssi=raw_data[d], ap=ap)
             session.add(sample)
 
@@ -143,27 +158,34 @@ def start_calibration():
             step (2) when received.
     """
     # Your code here
-    session = Session()
-
-    print('request args {}'.format(request.args))
-    raw_data = request.args
+    
+    if request.method == 'POST':
+        raw_data = request.values
+    else:
+        raw_data = request.args
 
     mac_addr = raw_data['mac_addr']
     x = raw_data['x']
     y = raw_data['y']
     z = raw_data['z']
 
+    if not validateMAC(mac_addr):
+        return 'MAC address is not valid.\n'
+    
+    session = Session()
+
     location = Location(x, y, z)
-    print(location)
+    # print(location)
     # add the location coordinates to the location table
     session.add(location)
     session.commit()
 
-    print('location is {}'.format(location.id))
+    # print('location is {}'.format(location.id))
 
     calibrating_mobile = session.query(CalibratingMobile).filter(CalibratingMobile.mac_address==mac_addr).first()
+    
     if(calibrating_mobile is not None):
-        print('Calibration already started for this address.\n')
+        print('Calibration already running for this address.\n')
     else:    
         calibrating_mobile = CalibratingMobile(mac_address=mac_addr, loc_id=location.id, location=location)
         # add the calibrating data to the table
@@ -189,14 +211,20 @@ def stop_calibration():
         It receives one parameter: mac_addr (string)
         It must delete any calibrating_mobile entry whose mac_address equal parameter mac_addr
     """
-    session = Session()	
+    if request.method == 'POST':   
+        mac_addr = request.values['mac_addr']
+    else:
+        mac_addr = request.args['mac_addr']
 
-    mac_addr = request.args['mac_addr']
+    if not validateMAC(mac_addr):
+        return 'MAC address is not valid.\n'
+
+    session = Session()	
     session.query(CalibratingMobile).filter(CalibratingMobile.mac_address==mac_addr).delete()
     session.commit()
     session.close()
 
-    return "Calibration Stopped"
+    return "Calibration Stopped for {}\n".format(mac_addr)
 
 
 @app.route("/locate", methods=['GET', 'POST'])
@@ -209,10 +237,20 @@ def locate():
         Use the closest in RSSI algorithm to find a fingerprint sample matching current sample and return its location
     """
     # Your code here
-    samples = []
+
+
+    if request.method == 'POST':        
+        mac_addr = request.values['mac_addr']
+        print('from post {}'.format(mac_addr))
+    else:
+        mac_addr = request.args['mac_addr']
+        print('from get {}'.format(mac_addr))
+    
+    if not validateMAC(mac_addr):
+        return 'MAC address is not valid.\n'
+
     session = Session()
 
-    mac_addr = request.args['mac_addr']
     # raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1)).all()
     raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr).all()
 
@@ -260,10 +298,17 @@ def locate():
 
     print('location is \n')
     print(location)
-    print('x:{}\ny:{}\nz:{}\n'.format(location.x, location.y, location.z))
 
     if location is None:
         return "Location couldn't be found\n"
 
+    print('x:{}\ny:{}\nz:{}\n'.format(location.x, location.y, location.z))
     # return 'good\n'
     return "The location calculated is x:{}, y:{} and z:{}\n".format(location.x, location.y, location.z)
+
+
+def validateMAC(mac):
+    if re.match("^(([a-fA-F0-9]{2}-){5}[a-fA-F0-9]{2}|([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}|([0-9A-Fa-f]{4}.){2}[0-9A-Fa-f]{4})?$", mac.lower()):
+        return True
+    else:
+        return False
