@@ -98,13 +98,6 @@ def rssi():
     print('raw data is \n')
     print(raw_data)
 
-    # for d in raw_data:
-    #     if (d != 'ap'):
-    #         print('here')
-    #         if not validateMAC(d):
-    #             return 'MAC address of one of the measured device is not valid.\n'
-
-
     session = Session()
     ap = session.query(AccessPoint).filter(AccessPoint.mac_address==ap_addr).first()
 
@@ -127,7 +120,8 @@ def rssi():
     for c_data in calibrating_data:
         loc = c_data.location
 
-        all_samples = session.query(Sample).filter(Sample.source_address == ap.mac_address, Sample.timestamp >= (time.time() - 1)).all()
+        all_samples = session.query(Sample).filter(Sample.source_address == ap.mac_address).filter(Sample.timestamp >= (time.time() - 1)).all()
+        all_samples = session.query(Sample).filter(Sample.source_address == ap.mac_address).all()
 
         if (all_samples is not None):
             for sample in all_samples:
@@ -157,8 +151,7 @@ def start_calibration():
         (3) In /rssi route: add instructions that process all incoming RSSI samples like
             step (2) when received.
     """
-    # Your code here
-    
+
     if request.method == 'POST':
         raw_data = request.values
     else:
@@ -175,8 +168,7 @@ def start_calibration():
     session = Session()
 
     location = Location(x, y, z)
-    # print(location)
-    # add the location coordinates to the location table
+
     session.add(location)
     session.commit()
 
@@ -191,8 +183,8 @@ def start_calibration():
         # add the calibrating data to the table
         session.add(calibrating_mobile)
 
-    # all_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1)).all()
-    all_samples = session.query(Sample).filter(Sample.source_address == mac_addr).all()
+    all_samples = session.query(Sample).filter(Sample.source_address == mac_addr).filter(Sample.timestamp >= (time.time() - 1)).all()
+    # all_samples = session.query(Sample).filter(Sample.source_address == mac_addr).all()
     if all_samples is not None:
         for sample in all_samples:
             fingerprint_value = FingerprintValue(loc_id=location.id, ap_id=sample.ap.id, rssi=sample.rssi, location=location, ap=sample.ap)
@@ -236,23 +228,19 @@ def locate():
         These samples are compared to the content of fingerprint_value table
         Use the closest in RSSI algorithm to find a fingerprint sample matching current sample and return its location
     """
-    # Your code here
-
 
     if request.method == 'POST':        
         mac_addr = request.values['mac_addr']
-        print('from post {}'.format(mac_addr))
     else:
         mac_addr = request.args['mac_addr']
-        print('from get {}'.format(mac_addr))
     
     if not validateMAC(mac_addr):
         return 'MAC address is not valid.\n'
 
     session = Session()
 
-    # raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr, Sample.timestamp >= (time.time() - 1)).all()
-    raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr).all()
+    raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr).filter(Sample.timestamp >= (time.time() - 1)).all()
+    # raw_samples = session.query(Sample).filter(Sample.source_address == mac_addr).all()
 
     # for sample in raw_samples:
     #     samples.append((
