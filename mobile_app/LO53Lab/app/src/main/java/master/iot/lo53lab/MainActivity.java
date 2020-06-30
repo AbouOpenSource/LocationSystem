@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
         WifiManager manager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = manager.getConnectionInfo();
-        macAddress = info.getMacAddress();
-
+        //macAddress = info.getMacAddress();
+    macAddress = "B2:45:52:ED:1E:B8";
         mTextViewResult.setText(macAddress);
 
 
@@ -47,12 +47,15 @@ public class MainActivity extends AppCompatActivity {
         String serverIp = String.valueOf(serverIPWidget.getText());
         if(serverIp.equals("")){
            // serverIp = "http://localhost:5000";
+            /**
+             * the address of the lost of emulator
+             */
             serverIp = "http://10.0.2.2:5000";
 
         }
-        double x=0;
-        double y=0;
-        double z=0;
+        double x=2;
+        double y=2;
+        double z=2;
 
         String url = serverIp + "/start_calibration?mac_addr=" + macAddress + "&x=" + x + "&y=" + y + "&z=" + z;
         sendRequest(url);

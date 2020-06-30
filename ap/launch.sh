@@ -6,3 +6,6 @@ fi
 airmon-ng check kill
 #Launch Monitor mode 
 airmon-ng start wl2ps0
+
+
+./cmake-build-debug/apNew

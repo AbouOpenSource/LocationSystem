@@ -69,27 +69,38 @@ void process_pkts(u_char* user, const struct pcap_pkthdr *pkt, const u_char *byt
             }
         }
     }
-
-                    RSSILog toSend;
+                    /**
+                     * set of the packets to send
+                     */
+                    RSSILog setToSend;
 
                     for (int i =0;i<user_data->samples.size();i++){
 
-                        struct timeval current{};
-                        gettimeofday(&current, nullptr);
-                        int diff = ( current.tv_sec - user_data->samples[i].ts.tv_sec );
+                        /**
+                         * getiing the current timestamp
+                         * @url https://man7.org/linux/man-pages/man2/gettimeofday.2.html
+                         */
+                        struct timeval cur{};
+                        gettimeofday(&cur, nullptr);
+
+                        int diff = ( cur.tv_sec - user_data->samples[i].ts.tv_sec );
                         if(diff >= 1){
-                            cout << "Send : Mac " << user_data->samples[i].mac_address << " Rssi " << user_data->samples[i].rssi << " Antenna " << user_data->samples[i].antenna << endl;
-                            printf("Emis il y a %d seconds\n",diff);
-                            toSend.push_back(user_data->samples[i]);
-                            /** Erase if **/
+                            cout << "Mac " << user_data->samples[i].mac_address
+                                 << " Rssi " << user_data->samples[i].rssi
+                                 << " Antenna "<< user_data->samples[i].antenna
+                                 << endl;
+                            printf("il y a %d seconds\n",diff);
+                            setToSend.push_back(user_data->samples[i]);
                             user_data->samples.erase(user_data->samples.begin()+i);
                             i--;
                         }
 
-                                                }
-                                if(toSend.size()>0){
-                                    send_samples(toSend, user_data->ap_mac_addr);
+                    }
 
-                        }
+
+                                if(!setToSend.empty())
+                                    send_samples(setToSend, user_data->ap_mac_addr);
+
+
 
 }

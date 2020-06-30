@@ -97,7 +97,7 @@ void send_samples(RSSILog samples, std::string ap_mac_addr) {
         arrayOfMean[item.first]={ std::accumulate(vectorOf.begin(), vectorOf.end(), 0.0)/vectorOf.size() };
 
     }
-   // path += params;
+    //path += params;
     for(auto & item : arrayOfMean) {
         //uri.addQueryParameter(item.first,std::to_string(item.second));
         params += "&" + item.first + "=" + std::to_string(item.second);
